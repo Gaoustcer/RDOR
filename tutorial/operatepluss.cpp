@@ -36,7 +36,8 @@ public:
 
 int main(){
     simpleclass inst1,inst2;
-    
+    simpleclass inst3 = inst2 + inst1;
+    cout << inst3.ptr[3] << endl;
     // retref();
     // cout << "after call";
 }
