@@ -121,8 +121,28 @@ arrfile ** getcheckblock(arrfile & block,int dividenum = P){
     int linecheckid = dividenum - 1;
     for(int i = 0;i < dividenum - 1;i++){
         // forresult[i][4] = result[i][0] ^ result[i][1] ^ result[i][2] ^ result[i][3]
-        
+        std::vector<arrfile *> vec;
+        for(int j = 0;j < dividenum - 1;j++){
+            vec.push_back(&result[i][j]);
+        }
+        result[i][linecheckid] = std::move(arrfile(vec));
     }
+    int trajcheckid = dividenum + 1;
+    // For diagonal check block we define
+    // D_j = (d[i][r]|(i+r)mod p = j,0\leq i\leq p-2,0\leq r\leq p)
+    for(int k = 0;k < dividenum - 1;k++){
+        // diagnoal check are exists in array of D[4][5]
+        std::vector<arrfile *> vec;
+        for(int i = 0;i < dividenum - 1;i++){
+            for(int j = 0;j < dividenum;j++){
+                if((i+j)%dividenum == k){
+                    vec.push_back(&result[i][j]);
+                }
+            }
+        }
+        result[k][trajcheckid] = std::move(arrfile(vec));
+    }
+    return result;
 
     
     // P = 5 then result should be a 4\times 5 blockarray,array[4][5]
