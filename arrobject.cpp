@@ -3,6 +3,9 @@
 #include "filesize.h"
 #include <string.h>
 #include <assert.h>
+#include <vector>
+
+
 // #include <filesize.h>
 arrfile::arrfile(char * filename){
     std::ifstream fileread(filename);
@@ -16,19 +19,112 @@ arrfile::arrfile(int size,char *ptr){
     _size = size;
     delete [] ptr;    
 }
+arrfile::arrfile(std::vector<arrfile *>& vecarrfile){
+    int arrsize = vecarrfile.size();
+    assert(arrsize != 0);
+    *this = *vecarrfile[0];
 
-arrfile arrfile::operator^(arrfile & rightoperator){
-    assert(_size == rightoperator.size());
-    char * pointer = new char[_size];
-    int size = _size;
-    for(int i = 0;i < _size;i++){
-        pointer[i] = _ptr[i] ^ rightoperator[i];
+    for(int i = 1;i < arrsize; i++){
+        *this ^ *vecarrfile[i];
     }
-    arrfile object(size,pointer);
-    return object;
+
 }
 
+arrfile::arrfile(int size){
+    _ptr = new char[size];
+    _size = size;
+}
+
+arrfile& arrfile::operator^(arrfile & rightoperator){
+    assert(_size == rightoperator.size());
+    for(int i = 0;i < _size;i++){
+        _ptr[i] = _ptr[i] ^ rightoperator[i];
+    }
+    return *this;
+    // char * pointer = new char[_size];
+    // int size = _size;
+    // for(int i = 0;i < _size;i++){
+    //     pointer[i] = _ptr[i] ^ rightoperator[i];
+    // }
+    // arrfile object(size,pointer);
+    // return object;
+}
+
+
+arrfile::arrfile(){
+    _size = 0;
+    _ptr = nullptr;
+}
 char& arrfile::operator[](int index){
     assert(index < _size);
     return _ptr[index];
+}
+arrfile & arrfile::operator=(arrfile & rightvalue){
+    // directly copy function
+    _size = rightvalue._size;
+    _ptr = new char[_size];
+    memcpy(_ptr,rightvalue._ptr,sizeof(char) * _size);
+
+}
+arrfile & arrfile::operator=(arrfile && rightvalue){
+    _ptr = rightvalue._ptr;
+    _size = rightvalue._size;
+    rightvalue._size = 0;
+    rightvalue._ptr = nullptr;
+    return *this;
+}
+
+arrfile * separate(arrfile & file,int number){
+    int dividesize = file.size()/number;
+    arrfile * array = new arrfile[number];
+    for(int i = 0;i < number;i++){
+        char * pointer = file._ptr + i * dividesize;
+        array[i] = std::move(arrfile(dividesize,pointer));
+    }
+    return array;
+    // assert(file.size() % number == 0);
+    // int _size = file.size()/number;
+    // arrfile * arrptr = new arrfile;
+    // arrfile * filepointer = new arrfile[4];
+}
+arrfile::arrfile(arrfile && file){
+    _size = file._size;
+    _ptr = file._ptr;
+    file._size = 0;
+    file._ptr = nullptr;
+}
+
+arrfile::~arrfile(){
+    if(_size != 0){
+        delete [] _ptr;
+    }
+    _size = 0;
+}
+
+arrfile ** getcheckblock(arrfile & block,int dividenum = P){
+    arrfile **result;
+    // dividenum = 5
+    // result is[4][6] (max index is [3][5])
+    result = new arrfile*[dividenum - 1];
+    for(int i = 0;i < dividenum -1; i++){
+        result[i] = new arrfile[dividenum + 1];
+    }
+    arrfile * divideforwholefile = separate(block,dividenum - 1);
+    for(int i = 0;i < dividenum -1; i++){
+        // result[0,1,2,3][i] should be divided from divideforwholefile[i]
+        arrfile * blockdivide = separate(divideforwholefile[i],dividenum - 1);
+        for(int j = 0;j < dividenum - 1;j++){
+            result[j][i] = std::move(blockdivide[j]);
+        }
+    }
+    // generate line check for result[0-3][4]
+    int linecheckid = dividenum - 1;
+    for(int i = 0;i < dividenum - 1;i++){
+        // forresult[i][4] = result[i][0] ^ result[i][1] ^ result[i][2] ^ result[i][3]
+        
+    }
+
+    
+    // P = 5 then result should be a 4\times 5 blockarray,array[4][5]
+    // array[0-3,i] should be the i divide
 }
