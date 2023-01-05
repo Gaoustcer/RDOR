@@ -209,7 +209,8 @@ std::vector<std::pair<int,int>> diagcheck(int x,int y,int p){
     for(int i = 0;i < P - 1;i++){
         for(int j = 0;j < P + 1;j++){
             if(i != x || j != y)
-                vec.push_back(std::make_pair(i,j));
+                if(((i+j)%p) == ((x+y)%p))
+                    vec.push_back(std::make_pair(i,j));
         }
     }
     return vec;
@@ -221,7 +222,7 @@ std::vector<std::pair<int,int>> linecheck(int x,int y,int p){
         return vec;
     }
     for(int j = 0;j < p;j++){
-        if(y != p)
+        if(y != j)
             vec.push_back(std::make_pair(x,j));
     }
     return vec;
