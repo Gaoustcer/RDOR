@@ -1,5 +1,5 @@
 #include <vector>
-
+#include <utility>
 class arrfile{
 public:
     int _size;
@@ -29,3 +29,5 @@ arrfile * separate(arrfile &,int);
 arrfile ** getcheckblock(arrfile &,int dividenum = P);
 void save(std::vector<arrfile*> &,const char *);
 void getbaseline();
+std::vector<std::pair<int,int>> diagcheck(int x,int y,int p);
+std::vector<std::pair<int,int>> linecheck(int,int,int);

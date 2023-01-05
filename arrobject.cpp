@@ -5,6 +5,7 @@
 #include <assert.h>
 #include <vector>
 #include <iostream>
+#include <utility>
 
 // #include <filesize.h>
 arrfile::arrfile(char * filename){
@@ -195,4 +196,35 @@ void getbaseline(){
         files[0] ^ files[i];
     }
     files[0].save("files/baseline_linecheck");
+}
+
+std::vector<std::pair<int,int>> diagcheck(int x,int y,int p){
+    // get diag check of d[x,y]
+    // D_j = {d_{i,r}|(i+r) mod p = j}
+    // default p is 5
+    std::vector<std::pair<int,int>> vec;
+    if((x+y)%p == p - 1){
+        return vec;
+    }
+    for(int i = 0;i < P - 1;i++){
+        for(int j = 0;j < P + 1;j++){
+            if(i != x || j != y)
+                vec.push_back(std::make_pair(i,j));
+        }
+    }
+    return vec;
+}
+
+std::vector<std::pair<int,int>> linecheck(int x,int y,int p){
+    std::vector<std::pair<int,int>> vec;
+    if(y == p){
+        return vec;
+    }
+    for(int j = 0;j < p;j++){
+        if(y != p)
+            vec.push_back(std::make_pair(x,j));
+    }
+    return vec;
+    // default p = 5
+    // get linecheck
 }
