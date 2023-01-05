@@ -192,7 +192,7 @@ void getbaseline(){
         files[i] = std::move(arrfile(checkblock[i]));
     }
     for(int i = 1;i < 4;i++){
-        files[0] + files[i];
+        files[0] ^ files[i];
     }
     files[0].save("files/baseline_linecheck");
 }
