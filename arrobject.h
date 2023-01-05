@@ -1,5 +1,8 @@
 #include <vector>
 #include <utility>
+#include <set>
+#define P 5
+
 class arrfile{
 public:
     int _size;
@@ -24,10 +27,26 @@ public:
     arrfile & operator+(arrfile &);
     void save(const char*);
 };
-#define P 5
+class decision{
+public:
+    std::set<std::pair<int,int>> blocktoread;
+    int maxsize;
+    // true means use diag check
+    bool *diagornot;
+    decision(int _maxsize);
+    decision(decision &copy);
+    decision& operator=(decision &);
+    int size();
+    void push(std::pair<int,int>&);
+    // bool& operator[](int index){
+
+    // }
+};
+
 arrfile * separate(arrfile &,int);
 arrfile ** getcheckblock(arrfile &,int dividenum = P);
 void save(std::vector<arrfile*> &,const char *);
 void getbaseline();
 std::vector<std::pair<int,int>> diagcheck(int x,int y,int p);
 std::vector<std::pair<int,int>> linecheck(int,int,int);
+void search(int x,int y,int maxlevel,decision& decide);

@@ -6,6 +6,7 @@
 #include <vector>
 #include <iostream>
 #include <utility>
+#include <set>
 
 // #include <filesize.h>
 arrfile::arrfile(char * filename){
@@ -228,4 +229,64 @@ std::vector<std::pair<int,int>> linecheck(int x,int y,int p){
     return vec;
     // default p = 5
     // get linecheck
+}
+
+decision& decision::operator=(decision & obj){
+    maxsize = obj.maxsize;
+    diagornot = new bool[maxsize];
+    memcpy((void *)diagornot,(void *)obj.diagornot,sizeof(bool) * maxsize);
+    blocktoread = obj.blocktoread;
+    return *this;
+}
+
+decision::decision(int _maxsize){
+    maxsize = _maxsize;
+    diagornot = new bool[maxsize];
+}
+
+decision::decision(decision & copy){
+    maxsize = copy.maxsize;
+    diagornot = new bool[maxsize];
+    memcpy((void *)diagornot,(void *)copy.diagornot,sizeof(bool) * maxsize);
+    blocktoread = copy.blocktoread;
+}
+int decision::size(){
+    return blocktoread.size();
+}
+
+void decision::push(std::pair<int,int> &obj){
+    blocktoread.insert(obj);
+}
+
+void search(int x,int y,int maxlevel,decision& decide){
+    // level starts with 0 and if level == maxlevel the decide is returned.
+    // maxlevel = 4
+    // if(x == maxlevel){
+    //     return decide;
+    // }
+    // level means blocktoread[0] has options
+    auto diag = diagcheck(x,y,maxlevel + 1);
+    decision diagdecide = decide,linedecide = decide;
+    if(diag.size()){
+        for(auto &p:diag){
+            diagdecide.push(p);
+        }
+        diagdecide.diagornot[x] = true;
+        search(x+1,y,maxlevel,diagdecide);
+    }
+    auto line = linecheck(x,y,maxlevel + 1);
+    for(auto &p:line){
+        linedecide.push(p);
+    }
+    search(x+1,y,maxlevel,linedecide);
+    if(diag.size()){
+        // if(diagdecide.size() <)
+        decide = (diagdecide.size() < linedecide.size())?diagdecide:linedecide;
+    }
+    else{
+        decide = linedecide;
+    }
+    // linedecide = search(x+1,y,maxlevel,linedecide);
+    // return diagdecide;
+
 }
