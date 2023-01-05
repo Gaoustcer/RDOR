@@ -21,7 +21,11 @@ public:
     ~arrfile();
     arrfile & operator=(arrfile &&);
     arrfile & operator=(arrfile &);
+    arrfile & operator+(arrfile &);
+    void save(const char*);
 };
 #define P 5
 arrfile * separate(arrfile &,int);
 arrfile ** getcheckblock(arrfile &,int dividenum = P);
+void save(std::vector<arrfile*> &,const char *);
+void getbaseline();
