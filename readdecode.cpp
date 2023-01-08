@@ -3,6 +3,10 @@
 #include <iostream>
 #include <vector>
 #include <utility>
+#include <assert.h>
+#include <time.h>
+
+
 
 arrfile **getarray(int dividenumber){
     // default dividenumber = 5
@@ -11,13 +15,15 @@ arrfile **getarray(int dividenumber){
     arrfile ** array;
     arrfile * datafile = new arrfile[dividenumber - 1];
     arrfile * checkinfile = new arrfile[2];
+    auto start = clock();
     for(int i = 0;i < 2;i++){
         checkinfile[i] = std::move(arrfile((char *)checkfilelist[i]));
     }
     for(int i = 0;i < dividenumber - 1;i++){
         datafile[i] = std::move(arrfile(datafilelist[i]));
     }
-    std::cout << "read datafile and checkinfile\n";
+    auto end = clock();
+    std::cout << "read datafile and checkinfile with time of "<< end - start << std::endl;
     array = new arrfile*[dividenumber - 1];
     for(int i = 0;i < dividenumber - 1;i++){
         array[i] = new arrfile[dividenumber + 1];
@@ -40,6 +46,13 @@ arrfile **getarray(int dividenumber){
     return array;
 
 }
+
+arrfile * baselinerecover(int P,int recoverid){
+    arrfile ** array = getarray(P);
+    arrfile * recoverarray = new arrfile[P - 1];
+    
+}
+
 arrfile * decode(int P,int recoverid){
     // recoverid = 0,1,2,3,4,5
     arrfile * recoverarray = new arrfile[P - 1];

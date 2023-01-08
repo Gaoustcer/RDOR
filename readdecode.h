@@ -5,5 +5,5 @@
 
 arrfile** getarray(int );
 arrfile * decode(int,int);
-
+arrfile * baselinerecover(int,int);
 // first parameter is P = 5,second parameter is recovery index
