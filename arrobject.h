@@ -1,7 +1,8 @@
 #include <vector>
 #include <utility>
 #include <set>
-#define P 5
+#pragma once
+// #define P 5
 
 class arrfile{
 public:
@@ -44,9 +45,10 @@ public:
 };
 
 arrfile * separate(arrfile &,int);
-arrfile ** getcheckblock(arrfile &,int dividenum = P);
+arrfile ** getcheckblock(arrfile &,int dividenum);
 void save(std::vector<arrfile*> &,const char *);
 void getbaseline();
 std::vector<std::pair<int,int>> diagcheck(int x,int y,int p);
 std::vector<std::pair<int,int>> linecheck(int,int,int);
 void search(int x,int y,int maxlevel,decision& decide);
+// void repair()

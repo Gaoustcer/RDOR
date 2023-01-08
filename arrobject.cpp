@@ -207,8 +207,8 @@ std::vector<std::pair<int,int>> diagcheck(int x,int y,int p){
     if((x+y)%p == p - 1){
         return vec;
     }
-    for(int i = 0;i < P - 1;i++){
-        for(int j = 0;j < P + 1;j++){
+    for(int i = 0;i < p - 1;i++){
+        for(int j = 0;j < p + 1;j++){
             if(i != x || j != y)
                 if(((i+j)%p) == ((x+y)%p))
                     vec.push_back(std::make_pair(i,j));
@@ -240,6 +240,7 @@ decision& decision::operator=(decision & obj){
 }
 
 decision::decision(int _maxsize){
+    std::cout << "Initial the object decison\n";
     maxsize = _maxsize;
     diagornot = new bool[maxsize];
 }
@@ -264,9 +265,14 @@ void search(int x,int y,int maxlevel,decision& decide){
     // if(x == maxlevel){
     //     return decide;
     // }
+    if(x == maxlevel){
+        // std::cout << "maxdepth is " << x << std::endl;
+        return;
+    }
     // level means blocktoread[0] has options
     auto diag = diagcheck(x,y,maxlevel + 1);
     decision diagdecide = decide,linedecide = decide;
+    // std::cout << "diag " << diag.size()  << " " << << std::endl;
     if(diag.size()){
         for(auto &p:diag){
             diagdecide.push(p);
@@ -281,10 +287,20 @@ void search(int x,int y,int maxlevel,decision& decide){
     search(x+1,y,maxlevel,linedecide);
     if(diag.size()){
         // if(diagdecide.size() <)
-        decide = (diagdecide.size() < linedecide.size())?diagdecide:linedecide;
+        if(linedecide.size()){
+            decide = (diagdecide.size() < linedecide.size())?diagdecide:linedecide;
+            decide.diagornot[x] = (diagdecide.size() < linedecide.size())?true:false;
+        }
+        else{
+            decide = diagdecide;
+            decide.diagornot[x] = true;
+        }
+        
     }
     else{
+        // decide.diagornot[x] = 
         decide = linedecide;
+        decide.diagornot[x] = false;
     }
     // linedecide = search(x+1,y,maxlevel,linedecide);
     // return diagdecide;

@@ -7,11 +7,19 @@ using namespace std;
 
 
 int main(){
-    auto vec = diagcheck(2,2,P);
-    vec = linecheck(2,2,P);
-    for(auto & p: vec){
+    decision root(4);
+    search(0,1,4,root);
+    for(auto &p:root.blocktoread){
         cout << p.first << " " << p.second << endl;
     }
+    for(int i = 0;i < root.maxsize;i++){
+        cout << root.diagornot[i] << endl;
+    }
+    // auto vec = diagcheck(2,2,P);
+    // vec = linecheck(2,2,P);
+    // for(auto & p: vec){
+    //     cout << p.first << " " << p.second << endl;
+    // }
     // getbaseline();
     // return 0;
     // arrfile file("./files/test");
