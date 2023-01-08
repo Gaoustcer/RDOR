@@ -6,7 +6,7 @@
 
 arrfile **getarray(int dividenumber){
     // default dividenumber = 5
-    char * datafilelist[4] = {"files/datablock_1","files/datablock_2","files/datablock_3","files/datablock_3"};
+    char * datafilelist[4] = {"files/datablock_1","files/datablock_2","files/datablock_3","files/datablock_4"};
     char * checkfilelist[2] = {"files/linecheck","files/diagcheck"};
     arrfile ** array;
     arrfile * datafile = new arrfile[dividenumber - 1];

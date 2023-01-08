@@ -4,8 +4,28 @@
 using namespace std;
 #define P 5
 int main(){
-    // test array read
-    // arrfile ** array = getarray(P);
+
+    arrfile ** array = getarray(P);
+    // array[0][4].save("files/04baseline");
+    arrfile checkfile[4];
+    for(int i = 0;i < 4;i++){
+        checkfile[i] = std::move(array[0][i]);
+        for(int j = 1;j < 4;j++){
+            checkfile[i] + array[j][i];
+        }
+    }
+    arrfile check = std::move(checkfile[0]);
+    for(int j = 1;j < 4;j++){
+        check + checkfile[j];
+    }
+    // checkfile.save("files/0reconstruct");
+    // arrfile check = std::move(checkfile[0] ^ checkfile[1] ^ checkfile[2] ^ checkfile[3]);
+    check.save("files/check");
+    // for(int i = 1;i < P - 1; i++){
+    //     checkfile ^ array[0][i];
+    // }
+    // checkfile.save("files/04check");
+    return 0;
     // arrfile first = std::move(array[0][5]);
     // for(int i = 1;i < P - 1;i++){
     //     first + array[i][5];
@@ -13,7 +33,7 @@ int main(){
     // first.save("files/getarray5");
     // return 0;
     
-    arrfile * recover = decode(P,1);
+    arrfile * recover = decode(P,0);
     for(int i = 0;i < P - 1;i++){
         cout << recover[i].size() << endl;
     }

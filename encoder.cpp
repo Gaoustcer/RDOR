@@ -10,9 +10,9 @@ int main(){
     // getbaseline();
     // return 0;
     arrfile file("./files/test");
-    for(int i = 0;i < 1024 * 1024 * 256;i++){
-        file[i] += 1;
-    }
+    // for(int i = 0;i < 1024 * 1024 * 256;i++){
+    //     file[i] += 1;
+    // }
     arrfile **array = getcheckblock(file,P);
     for(int i = 0;i < P - 1;i++){
         for(int j = 0;j < P + 1;j++){
